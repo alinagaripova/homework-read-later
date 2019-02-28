@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="tabs">
+    <input type="radio" name="inset" value="" id="tab_1" checked>
+    <label for="tab_1">Прочитать</label>
+
+    <input type="radio" name="inset" value="" id="tab_2">
+    <label for="tab_2">Прочитано</label>
+
+    <input type="radio" name="inset" value="" id="tab_3">
+    <label for="tab_3">Поиск</label>
+
+
+    <div class="text" id="txt-1">
+        <input type="text" id="name" placeholder="Название">
+        <input type="text" id="tag-name" placeholder="Теги в формате #tag">
+        <input type="text" id="link" placeholder="Ссылка">
+        <button id="add">Добавить</button>
+        <ul id="list-1"></ul>
+    </div>
+    <div class="text" id="txt-2">
+        <ul id="list-2"></ul>
+    </div>
+    <div class="text" id="txt-3">
+        <input type="text" id="search" value="">
+        <button id="search-button">Искать</button>
+    </div>
+</div>
+
+<script src="js/lib.js" type="module"></script>
+<script src="js/app.js" type="module"></script>
+</body>
+</html>
