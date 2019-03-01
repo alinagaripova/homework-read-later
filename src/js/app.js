@@ -38,7 +38,7 @@ function rebuildTree(container, secondListEl, taskList, taskListDone) {
         doneEl.addEventListener('click', (evt) => {
             taskListDone.add(item);
             taskList.remove(item);
-            rebuildTree(container, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTree, 1000, container, secondListEl, taskList, taskListDone);
         });
 
     }
@@ -55,7 +55,7 @@ function rebuildTree(container, secondListEl, taskList, taskListDone) {
         doneEl.addEventListener('click', (evt) => {
             taskList.add(item);
             taskListDone.remove(item);
-            rebuildTree(container, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTree, 1000, container, secondListEl, taskList, taskListDone);
         });
     }
 
