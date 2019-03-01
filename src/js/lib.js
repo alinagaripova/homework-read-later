@@ -9,7 +9,7 @@ export class Task {
 
 export class TaskList {
     constructor() {
-        const savedItems = JSON.parse(localStorage.getItem('links'));
+        const savedItems = JSON.parse(localStorage.getItem('TaskList'));
         if (savedItems !== null) {
             this.items = savedItems;
         } else {
@@ -18,7 +18,7 @@ export class TaskList {
     }
 
     add(item) {
-        this.items.push(item);
+        this.items.unshift(item);
         this.save();
     }
     remove(item) {
@@ -30,7 +30,34 @@ export class TaskList {
         }
     }
     save() {
-        localStorage.setItem('links', JSON.stringify(this.items));
+        localStorage.setItem('TaskList', JSON.stringify(this.items));
+    }
+}
+
+export class TaskListDone {
+    constructor() {
+        const savedItems = JSON.parse(localStorage.getItem('TaskListDone'));
+        if (savedItems !== null) {
+            this.items = savedItems;
+        } else {
+            this.items = [];
+        }
+    }
+
+    add(item) {
+        this.items.unshift(item);
+        this.save();
+    }
+    remove(item) {
+        const index = this.items.indexOf(item);
+
+        if (index !== -1) {
+            this.items.splice(index, 1);
+            this.save();
+        }
+    }
+    save() {
+        localStorage.setItem('TaskListDone', JSON.stringify(this.items));
     }
 }
 
