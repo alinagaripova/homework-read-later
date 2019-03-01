@@ -21,7 +21,16 @@ export class TaskList {
         this.items.push(item);
         this.save();
     }
+    remove(item) {
+        const index = this.items.indexOf(item);
+
+        if (index !== -1) {
+            this.items.splice(index, 1);
+            this.save();
+        }
+    }
     save() {
         localStorage.setItem('links', JSON.stringify(this.items));
     }
 }
+

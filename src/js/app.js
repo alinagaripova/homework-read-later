@@ -37,6 +37,7 @@ addEl.addEventListener('click', (evt) => {
 });
 
 function rebuildTree(container, list) {
+    container.innerHTML = ''; // вырезать всех child'ов
     for (const item of list.items) {//попробовать forEach
         const liEl = document.createElement('li');
 
@@ -44,10 +45,17 @@ function rebuildTree(container, list) {
         <input type="checkbox" id="done">
         <a href="${item.link}" target="_blank">${item.name}</a>
         <span class="tags">${item.tag}</span>
+        <button data-id="remove" class="btn btn-danger btn-sm float-right">Remove</button>
     `;
+        const removeEl = liEl.querySelector('[data-id=remove]'); // внутри элемента li
+        removeEl.addEventListener('click', (evt) => {
+            taskList.remove(item);
+            rebuildTree(container, list);
+        });
         container.appendChild(liEl);
     }
 }
+rebuildTree(firstListEl, taskList);
 //
 // const doneEl = document.getElementById('done');
 // const secondListEl = document.getElementById('list-2');
@@ -58,4 +66,3 @@ function rebuildTree(container, list) {
 // });
 
 
-rebuildTree(firstListEl, taskList);
