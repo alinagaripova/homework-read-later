@@ -1,7 +1,8 @@
 export class Task {
     constructor(name, tag, link){
         this.name = name;
-        this.tag = tag;
+        this.tag = tag.split('#');
+        console.log(this.tag);
         this.link = link;
         this.done = false; //TODO: сделать через if false/true и currentTarget.checked
     }
@@ -18,7 +19,7 @@ export class TaskList {
     }
 
     add(item) {
-        this.items.unshift(item);
+        this.items.unshift(item); //добавление в начало списка
         this.save();
     }
     remove(item) {
