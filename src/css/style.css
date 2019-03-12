@@ -41,3 +41,7 @@ li {
     position: fixed;
     right: 280px;
 }
+
+.error {
+    color: red;
+}

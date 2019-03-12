@@ -1,4 +1,5 @@
 import {Task, TaskList, TaskListDone} from "./lib.js";
+import {checkLink} from "./valid.js";
 
 const nameEl = document.getElementById('name');
 const tagsEl = document.getElementById('tag-name');
@@ -6,7 +7,7 @@ const linkEl = document.getElementById('link');
 const addEl = document.getElementById('add');
 const firstListEl = document.getElementById('list-1');
 const secondListEl = document.getElementById('list-2');
-const errorEl = document.querySelector('error');
+const errorEl = document.querySelector('.error');
 const searchEl = document.getElementById('search');
 const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
@@ -28,9 +29,12 @@ addEl.addEventListener('click', (evt) => { //кнопка добавить
     const tags = tagsEl.value;
     const link = linkEl.value;
     const task = new Task(name, tags, link);
-    taskList.add(task);
+    if (checkLink(link, taskList, taskListDone) > 0) {
+        errorEl.textContent = 'Данная ссылка уже есть в списке.';
+    } else {
+        taskList.add(task)
+    }
     // taskList.check(link);
-    console.log(taskList);
     nameEl.value = '';
     tagsEl.value = '';
     linkEl.value = '';
@@ -43,7 +47,7 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
     for (const item of taskList.items) {
         const liEl = document.createElement('li');
         let tagsHTML = '';
-        for (const tag of item.tag){
+        for (const tag of item.tag){ //todo: сделать чтоб нулевой элемент вообще не добавлялся
             tagsHTML = tagsHTML + `#${tag} `;
         }
 
@@ -52,7 +56,7 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         <a href="${item.link}" target="_blank">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
         <button data-id="remove" class="remove">Удалить</button> 
-    `;      //TODO: почему # добавляется  только к последнему объекту массива???
+    `;
         firstListEl.appendChild(liEl);
 
         const doneEl = liEl.querySelector('[data-id=done]'); // внутри элемента li
@@ -73,7 +77,7 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         const liEl = document.createElement('li');
         let tagsHTML = '';
         for (const tag of item.tag){
-            tagsHTML = `<span class="tags">#${tag}</span>`
+            tagsHTML = `<span class="tags">#${tag}</span>`//todo: сделать нормально как в taskList
         }
         liEl.innerHTML = `
         <input type="checkbox" data-id="done" checked>
@@ -96,7 +100,6 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
             rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
         });
     }
-    // errorEl.textContent = taskList.check();
 
 }
 
