@@ -25,7 +25,7 @@ addEl.addEventListener('click', (evt) => {//кнопка добавить
 function rebuildTree(container, secondListEl, taskList, taskListDone) {
     container.innerHTML = ''; // вырезать всех child'ов
     secondListEl.innerHTML = ''; // вырезать всех child'ов
-    for (const item of taskList.items) {//попробовать forEach
+    for (const item of taskList.items) {//TODO: попробовать forEach
         const liEl = document.createElement('li');
         liEl.innerHTML = `
         <input type="checkbox" data-id="done">
@@ -38,7 +38,7 @@ function rebuildTree(container, secondListEl, taskList, taskListDone) {
         doneEl.addEventListener('click', (evt) => {
             taskListDone.add(item);
             taskList.remove(item);
-            setTimeout(rebuildTree, 1000, container, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTree, 500, container, secondListEl, taskList, taskListDone);
         });
 
     }
@@ -55,7 +55,7 @@ function rebuildTree(container, secondListEl, taskList, taskListDone) {
         doneEl.addEventListener('click', (evt) => {
             taskList.add(item);
             taskListDone.remove(item);
-            setTimeout(rebuildTree, 1000, container, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTree, 500, container, secondListEl, taskList, taskListDone);
         });
     }
 
