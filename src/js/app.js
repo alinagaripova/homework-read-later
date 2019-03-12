@@ -6,9 +6,22 @@ const linkEl = document.getElementById('link');
 const addEl = document.getElementById('add');
 const firstListEl = document.getElementById('list-1');
 const secondListEl = document.getElementById('list-2');
+const searchEl = document.getElementById('search');
+const searchBtnEl = document.getElementById('search-button');
+const searchListEl = document.getElementById('search-list');
 
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
+
+searchBtnEl.addEventListener('click', (evt) => {
+    const search = searchEl.value;
+    let searchArr = taskList.filter( task => {
+           return task === search;
+    });
+    console.log(searchArr);
+
+});
+
 
 addEl.addEventListener('click', (evt) => { //кнопка добавить
     const name = nameEl.value;
@@ -16,6 +29,7 @@ addEl.addEventListener('click', (evt) => { //кнопка добавить
     const link = linkEl.value;
     const task = new Task(name, tags, link);
     taskList.add(task);
+    console.log(taskList);
     nameEl.value = '';
     tagsEl.value = '';
     linkEl.value = '';
@@ -34,8 +48,9 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         liEl.innerHTML = `
         <input type="checkbox" data-id="done" checked>
         <a href="${item.link}" target="_blank">${item.name}</a>
-        ${tagsHTML} 
-    `;      //TODO:спросить у Никиты почему добавляется # только к последнему объекту массива!!!
+        ${tagsHTML}
+        <button data-id="remove" class="remove">Удалить</button> 
+    `;      //TODO: почему # добавляется  только к последнему объекту массива???
         firstListEl.appendChild(liEl);
 
         const doneEl = liEl.querySelector('[data-id=done]'); // внутри элемента li
@@ -43,6 +58,12 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
             taskListDone.add(item);
             taskList.remove(item);
             setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
+        });
+
+        const removeEl = liEl.querySelector('[data-id=remove]');
+        removeEl.addEventListener('click', (evt) => {
+            taskList.remove(item);
+            rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
         });
 
     }
@@ -56,6 +77,7 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         <input type="checkbox" data-id="done" checked>
         <a href="${item.link}" target="_blank">${item.name}</a>
         ${tagsHTML}
+        <button data-id="remove" class="remove">Удалить</button> 
     `;
         secondListEl.appendChild(liEl);
 
@@ -64,6 +86,12 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
             taskList.add(item);
             taskListDone.remove(item);
             setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
+        });
+
+        const removeEl = liEl.querySelector('[data-id=remove]');
+        removeEl.addEventListener('click', (evt) => {
+            taskListDone.remove(item);
+            rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
         });
     }
 

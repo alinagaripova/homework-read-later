@@ -34,6 +34,7 @@ export class TaskList {
         localStorage.setItem('TaskList', JSON.stringify(this.items));
     }
 }
+console.log(Task);
 
 export class TaskListDone {
     constructor() {
