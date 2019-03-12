@@ -6,6 +6,7 @@ const linkEl = document.getElementById('link');
 const addEl = document.getElementById('add');
 const firstListEl = document.getElementById('list-1');
 const secondListEl = document.getElementById('list-2');
+const errorEl = document.querySelector('error');
 const searchEl = document.getElementById('search');
 const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
@@ -13,14 +14,13 @@ const searchListEl = document.getElementById('search-list');
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
 
-searchBtnEl.addEventListener('click', (evt) => {
-    const search = searchEl.value;
-    let searchArr = taskList.filter( task => {
-           return task === search;
-    });
-    console.log(searchArr);
-
-});
+// searchBtnEl.addEventListener('click', (evt) => {
+//     const search = searchEl.value;
+//     let searchArr = taskList.filter( task => {
+//            return task === search;
+//     });
+//     console.log(searchArr);//todo
+// });
 
 
 addEl.addEventListener('click', (evt) => { //кнопка добавить
@@ -29,6 +29,7 @@ addEl.addEventListener('click', (evt) => { //кнопка добавить
     const link = linkEl.value;
     const task = new Task(name, tags, link);
     taskList.add(task);
+    // taskList.check(link);
     console.log(taskList);
     nameEl.value = '';
     tagsEl.value = '';
@@ -43,12 +44,13 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         const liEl = document.createElement('li');
         let tagsHTML = '';
         for (const tag of item.tag){
-            tagsHTML = `<span class="tags">#${tag}</span>`
+            tagsHTML = tagsHTML + `#${tag} `;
         }
+
         liEl.innerHTML = `
-        <input type="checkbox" data-id="done" checked>
+        <input type="checkbox" data-id="done">
         <a href="${item.link}" target="_blank">${item.name}</a>
-        ${tagsHTML}
+        <span class="tags">${tagsHTML}</span>
         <button data-id="remove" class="remove">Удалить</button> 
     `;      //TODO: почему # добавляется  только к последнему объекту массива???
         firstListEl.appendChild(liEl);
@@ -94,6 +96,7 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
             rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
         });
     }
+    // errorEl.textContent = taskList.check();
 
 }
 

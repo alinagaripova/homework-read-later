@@ -30,11 +30,19 @@ export class TaskList {
             this.save();
         }
     }
+    // check(item){//todo
+    //     // this.items.includes(item);
+    //     let link = Array.from(this.items.link); // почему this.items.link не распознает?
+    //     let checkedLink = link.includes(item);
+    //         if (checkedLink === true) {
+    //             return 'Данная ссылка уже есть в списке.'
+    //         }
+    //     }
     save() {
         localStorage.setItem('TaskList', JSON.stringify(this.items));
     }
 }
-console.log(Task);
+// console.log(Task);
 
 export class TaskListDone {
     constructor() {
