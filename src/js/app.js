@@ -8,9 +8,11 @@ const addEl = document.getElementById('add');
 const firstListEl = document.getElementById('list-1');
 const secondListEl = document.getElementById('list-2');
 const errorEl = document.querySelector('.error');
+const formEl = document.getElementById('form');
 const searchEl = document.getElementById('search');
 const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
+
 
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
@@ -22,9 +24,10 @@ const taskListDone = new TaskListDone();
 //     });
 //     console.log(searchArr);//todo
 // });
+//todo: прописать комменты что делают фун-ии и  стереть ненужные комменты
+//todo: сделать поиск в отдельном js файле
 
-
-addEl.addEventListener('click', (evt) => { //кнопка добавить
+formEl.addEventListener('submit', (evt) => {
     const name = nameEl.value;
     const tags = tagsEl.value;
     const link = linkEl.value;
@@ -77,12 +80,12 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         const liEl = document.createElement('li');
         let tagsHTML = '';
         for (const tag of item.tag){
-            tagsHTML = `<span class="tags">#${tag}</span>`//todo: сделать нормально как в taskList
+            tagsHTML = tagsHTML + `#${tag}`
         }
         liEl.innerHTML = `
         <input type="checkbox" data-id="done" checked>
         <a href="${item.link}" target="_blank">${item.name}</a>
-        ${tagsHTML}
+        <span class="tags">${tagsHTML}</span>
         <button data-id="remove" class="remove">Удалить</button> 
     `;
         secondListEl.appendChild(liEl);

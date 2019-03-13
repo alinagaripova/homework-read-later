@@ -14,3 +14,5 @@ export function checkLink(link, taskList, taskListDone) {
     }
     return count;
 }
+
+//todo: сделать валидацию
