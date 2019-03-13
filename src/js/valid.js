@@ -21,4 +21,5 @@ export function removeTag(task) {   //удаляет нулевой элемен
     }
 }
 
+
 //todo: сделать валидацию
