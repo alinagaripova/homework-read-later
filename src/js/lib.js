@@ -1,5 +1,5 @@
 export class Task {
-    constructor(name, tag, link){
+    constructor(name, tag, link) {
         this.name = name;
         this.tag = tag.split('#');
         this.link = link;
@@ -7,7 +7,7 @@ export class Task {
     }
 }
 
-export class TaskList {
+export class TaskList { //список прочитать
     constructor() {
         const savedItems = JSON.parse(localStorage.getItem('TaskList'));
         if (savedItems !== null) {
@@ -17,11 +17,13 @@ export class TaskList {
         }
     }
 
-    add(item) {
-        this.items.unshift(item); //добавление в начало списка
+    add(item) { //добавление элемента в начало списка
+        this.items.unshift(item);
+        console.log(this.items.name);
         this.save();
     }
-    remove(item) {
+
+    remove(item) {  //удаление элемента
         const index = this.items.indexOf(item);
 
         if (index !== -1) {
@@ -29,21 +31,13 @@ export class TaskList {
             this.save();
         }
     }
-    // check(item){//todo
-    //     // this.items.includes(item);
-    //     let link = Array.from(this.items.link); // почему this.items.link не распознает?
-    //     let checkedLink = link.includes(item);
-    //         if (checkedLink === true) {
-    //             return 'Данная ссылка уже есть в списке.'
-    //         }
-    //     }
+
     save() {
         localStorage.setItem('TaskList', JSON.stringify(this.items));
     }
 }
-// console.log(Task);
 
-export class TaskListDone {
+export class TaskListDone {  //список прочитано
     constructor() {
         const savedItems = JSON.parse(localStorage.getItem('TaskListDone'));
         if (savedItems !== null) {
@@ -53,11 +47,12 @@ export class TaskListDone {
         }
     }
 
-    add(item) {
+    add(item) {  //добавление элемента в начало списка
         this.items.unshift(item);
         this.save();
     }
-    remove(item) {
+
+    remove(item) {  //удаление элемента
         const index = this.items.indexOf(item);
 
         if (index !== -1) {
@@ -65,6 +60,7 @@ export class TaskListDone {
             this.save();
         }
     }
+
     save() {
         localStorage.setItem('TaskListDone', JSON.stringify(this.items));
     }

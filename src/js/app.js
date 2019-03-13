@@ -1,5 +1,5 @@
 import {Task, TaskList, TaskListDone} from "./lib.js";
-import {checkLink} from "./valid.js";
+import {checkLink, removeTag} from "./valid.js";
 
 const nameEl = document.getElementById('name');
 const tagsEl = document.getElementById('tag-name');
@@ -17,44 +17,40 @@ const searchListEl = document.getElementById('search-list');
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
 
-// searchBtnEl.addEventListener('click', (evt) => {
-//     const search = searchEl.value;
-//     let searchArr = taskList.filter( task => {
-//            return task === search;
-//     });
-//     console.log(searchArr);//todo
-// });
-//todo: прописать комменты что делают фун-ии и  стереть ненужные комменты
 //todo: сделать поиск в отдельном js файле
 
-formEl.addEventListener('submit', (evt) => {
+formEl.addEventListener('submit', (evt) => {           //добавление нового элеиента
+    evt.preventDefault();
     const name = nameEl.value;
     const tags = tagsEl.value;
     const link = linkEl.value;
     const task = new Task(name, tags, link);
-    if (checkLink(link, taskList, taskListDone) > 0) {
+    removeTag(task);                                                //удаляет нулевой элемеент в тэге
+    if (checkLink(link, taskList, taskListDone) > 0) {              //проверяет есть ли ссылка в списках
         errorEl.textContent = 'Данная ссылка уже есть в списке.';
     } else {
-        taskList.add(task)
+        taskList.add(task);
+        errorEl.textContent = "";
     }
-    // taskList.check(link);
+
     nameEl.value = '';
     tagsEl.value = '';
     linkEl.value = '';
     rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
 });
 
-function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
+function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {   //пересобирает список
     firstListEl.innerHTML = ''; // вырезать всех child'ов
     secondListEl.innerHTML = ''; // вырезать всех child'ов
-    for (const item of taskList.items) {
+    for (const item of taskList.items) { //элементы taskList
         const liEl = document.createElement('li');
+
         let tagsHTML = '';
-        for (const tag of item.tag){ //todo: сделать чтоб нулевой элемент вообще не добавлялся
+        for (const tag of item.tag) {     //перед каждым тегом ставит #
             tagsHTML = tagsHTML + `#${tag} `;
         }
 
-        liEl.innerHTML = `
+        liEl.innerHTML = `                                                 
         <input type="checkbox" data-id="done">
         <a href="${item.link}" target="_blank">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
@@ -62,24 +58,24 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
     `;
         firstListEl.appendChild(liEl);
 
-        const doneEl = liEl.querySelector('[data-id=done]'); // внутри элемента li
-        doneEl.addEventListener('click', (evt) => {
+        const doneEl = liEl.querySelector('[data-id=done]');
+        doneEl.addEventListener('click', (evt) => { //при нажатии на чекбокс эл-т отправляется в прочитано
             taskListDone.add(item);
             taskList.remove(item);
             setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
         });
 
-        const removeEl = liEl.querySelector('[data-id=remove]');
+        const removeEl = liEl.querySelector('[data-id=remove]');  //кнопка удалить элемент
         removeEl.addEventListener('click', (evt) => {
             taskList.remove(item);
             rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
         });
 
     }
-    for (const item of taskListDone.items) {
+    for (const item of taskListDone.items) {  //элементы taskListDone
         const liEl = document.createElement('li');
         let tagsHTML = '';
-        for (const tag of item.tag){
+        for (const tag of item.tag) {          //перед каждым тегом ставит #
             tagsHTML = tagsHTML + `#${tag}`
         }
         liEl.innerHTML = `
@@ -91,13 +87,13 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
         secondListEl.appendChild(liEl);
 
         const doneEl = liEl.querySelector('[data-id=done]'); // внутри элемента li
-        doneEl.addEventListener('click', (evt) => {
+        doneEl.addEventListener('click', (evt) => { //при нажатии на чекбокс эл-т отправляется в прочитать
             taskList.add(item);
             taskListDone.remove(item);
             setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
         });
 
-        const removeEl = liEl.querySelector('[data-id=remove]');
+        const removeEl = liEl.querySelector('[data-id=remove]'); //кнопка удалить элемент
         removeEl.addEventListener('click', (evt) => {
             taskListDone.remove(item);
             rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
@@ -107,13 +103,3 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {
 }
 
 rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
-//
-// const doneEl = document.getElementById('done');
-// const secondListEl = document.getElementById('list-2');
-
-// doneEl.addEventListener('click',(evt) => {
-//     if (doneEl === checked)
-//
-// });
-
-
