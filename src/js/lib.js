@@ -19,7 +19,6 @@ export class TaskList { //список прочитать
 
     add(item) { //добавление элемента в начало списка
         this.items.unshift(item);
-        console.log(this.items.name);
         this.save();
     }
 

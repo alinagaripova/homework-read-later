@@ -12,24 +12,51 @@ const searchEl = document.getElementById('search');
 const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
 
-
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
 
-//todo: сделать поиск в отдельном js файле
+//todo: подключить сервер
+//todo: сделать, чтоб в поиске checkbox был отмечен прочитано или нет
 
 searchBtnEl.addEventListener('click', () => {
     const search = searchEl.value;
     console.log(search);
-    findElement(search, taskList, taskListDone)
+    let results = findElement(search, taskList, taskListDone);
+    rebuildSearchList(searchListEl, results);
 });
 
-function findElement(search, taskList, taskListDone) {
+function findElement(search, taskList, taskListDone) {   //находит элементы по имени и собирает в массив
+    const searchItems = [];
     for (const item of taskList.items) {
         if (search === item.name) {
-            console.log(item);
-            return item;
+            searchItems.push(item);
         }
+    }
+    for (const item of taskListDone.items) {
+        if (search === item.name) {
+            searchItems.push(item);
+        }
+    }
+    console.log(searchItems);
+    return searchItems;
+}
+
+function rebuildSearchList(searchListEl, results) {                //пересобирает список поиска
+    searchListEl.innerHTML = '';
+    for (const result of results) {
+        const liEl = document.createElement('li');
+
+        let tagsHTML = '';
+        for (const tag of result.tag) {                            //перед каждым тегом ставит #
+            tagsHTML = tagsHTML + `#${tag} `;
+        }
+
+        liEl.innerHTML = `                                                 
+        <input type="checkbox" data-id="done">
+        <a href="${result.link}" target="_blank">${result.name}</a>
+        <span class="tags">${tagsHTML}</span>
+    `;
+        searchListEl.appendChild(liEl);
     }
 }
 
@@ -50,17 +77,17 @@ formEl.addEventListener('submit', (evt) => {           //добавление н
     nameEl.value = '';
     tagsEl.value = '';
     linkEl.value = '';
-    rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
+    rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone);
 });
 
-function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {   //пересобирает список
+function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   //пересобирает список прочитать и прочитано
     firstListEl.innerHTML = ''; // вырезать всех child'ов
     secondListEl.innerHTML = ''; // вырезать всех child'ов
     for (const item of taskList.items) { //элементы taskList
         const liEl = document.createElement('li');
 
         let tagsHTML = '';
-        for (const tag of item.tag) {     //перед каждым тегом ставит #
+        for (const tag of item.tag) {                                        //перед каждым тегом ставит #
             tagsHTML = tagsHTML + `#${tag} `;
         }
 
@@ -73,16 +100,16 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {   //п
         firstListEl.appendChild(liEl);
 
         const doneEl = liEl.querySelector('[data-id=done]');
-        doneEl.addEventListener('click', () => { //при нажатии на чекбокс эл-т отправляется в прочитано
+        doneEl.addEventListener('click', () => {             //при нажатии на чекбокс эл-т отправляется в прочитано
             taskListDone.add(item);
             taskList.remove(item);
-            setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTaskList, 500, firstListEl, secondListEl, taskList, taskListDone);
         });
 
-        const removeEl = liEl.querySelector('[data-id=remove]');  //кнопка удалить элемент
+        const removeEl = liEl.querySelector('[data-id=remove]');     //кнопка удалить элемент
         removeEl.addEventListener('click', () => {
             taskList.remove(item);
-            rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
+            rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone);
         });
 
     }
@@ -104,16 +131,16 @@ function rebuildTree(firstListEl, secondListEl, taskList, taskListDone) {   //п
         doneEl.addEventListener('click', () => { //при нажатии на чекбокс эл-т отправляется в прочитать
             taskList.add(item);
             taskListDone.remove(item);
-            setTimeout(rebuildTree, 500, firstListEl, secondListEl, taskList, taskListDone);
+            setTimeout(rebuildTaskList, 500, firstListEl, secondListEl, taskList, taskListDone);
         });
 
         const removeEl = liEl.querySelector('[data-id=remove]'); //кнопка удалить элемент
         removeEl.addEventListener('click', () => {
             taskListDone.remove(item);
-            rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
+            rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone);
         });
     }
 
 }
 
-rebuildTree(firstListEl, secondListEl, taskList, taskListDone);
+rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone);
