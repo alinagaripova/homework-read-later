@@ -6,22 +6,27 @@ const tagsEl = document.getElementById('tag-name');
 const linkEl = document.getElementById('link');
 const firstListEl = document.getElementById('list-1');
 const secondListEl = document.getElementById('list-2');
-const errorEl = document.querySelector('.error');
+const errorLinkEl = document.querySelector('.error-link');
 const formEl = document.getElementById('form');
+const formSearchEl = document.getElementById('form search');
 const searchEl = document.getElementById('search');
 const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
+const errorSearchEl = document.querySelector('.error-search');
 
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
 
-//todo: подключить сервер
-//todo: сделать, чтоб в поиске checkbox был отмечен прочитано или нет
+//todo: сделать поиск по enter
 
-searchBtnEl.addEventListener('click', () => {
+formSearchEl.addEventListener('submit', (evt) => {
+    evt.preventDefault();
     const search = searchEl.value;
-    console.log(search);
     let results = findElement(search, taskList, taskListDone);
+    if (results == '') {
+        errorSearchEl.textContent = 'Не найдено';
+    }
+    searchEl.value = '';
     rebuildSearchList(searchListEl, results);
 });
 
@@ -52,7 +57,6 @@ function rebuildSearchList(searchListEl, results) {                //перес�
         }
 
         liEl.innerHTML = `                                                 
-        <input type="checkbox" data-id="done">
         <a href="${result.link}" target="_blank">${result.name}</a>
         <span class="tags">${tagsHTML}</span>
     `;
@@ -68,10 +72,10 @@ formEl.addEventListener('submit', (evt) => {           //добавление н
     const task = new Task(name, tags, link);
     removeTag(task);                                                //удаляет нулевой элемеент в тэге
     if (checkLink(link, taskList, taskListDone) > 0) {              //проверяет есть ли ссылка в списках
-        errorEl.textContent = 'Данная ссылка уже есть в списке.';
+        errorLinkEl.textContent = 'Данная ссылка уже есть в списке.';
     } else {
         taskList.add(task);
-        errorEl.textContent = "";
+        errorLinkEl.textContent = "";
     }
 
     nameEl.value = '';

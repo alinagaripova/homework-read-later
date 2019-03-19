@@ -3,7 +3,7 @@ export class Task {
         this.name = name;
         this.tag = tag.split('#');
         this.link = link;
-        this.done = false; //TODO: сделать через if false/true и currentTarget.checked
+        this.done = false;
     }
 }
 
