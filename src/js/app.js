@@ -10,20 +10,17 @@ const errorLinkEl = document.querySelector('.error-link');
 const formEl = document.getElementById('form');
 const formSearchEl = document.getElementById('form search');
 const searchEl = document.getElementById('search');
-const searchBtnEl = document.getElementById('search-button');
 const searchListEl = document.getElementById('search-list');
 const errorSearchEl = document.querySelector('.error-search');
 
 const taskList = new TaskList();
 const taskListDone = new TaskListDone();
 
-//todo: сделать поиск по enter
-
 formSearchEl.addEventListener('submit', (evt) => {
     evt.preventDefault();
     const search = searchEl.value;
     let results = findElement(search, taskList, taskListDone);
-    if (results == '') {
+    if (results.length === 0) {
         errorSearchEl.textContent = 'Не найдено';
     }
     searchEl.value = '';
@@ -70,8 +67,10 @@ formEl.addEventListener('submit', (evt) => {           //добавление н
     const tags = tagsEl.value;
     const link = linkEl.value;
     const task = new Task(name, tags, link);
+
     removeTag(task);                                                //удаляет нулевой элемеент в тэге
-    if (checkLink(link, taskList, taskListDone) > 0) {              //проверяет есть ли ссылка в списках
+
+    if (checkLink(link, taskList, taskListDone) > 0) {          //проверяет есть ли ссылка в списках
         errorLinkEl.textContent = 'Данная ссылка уже есть в списке.';
     } else {
         taskList.add(task);
@@ -97,7 +96,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
 
         liEl.innerHTML = `                                                 
         <input type="checkbox" data-id="done">
-        <a href="${item.link}" target="_blank">${item.name}</a>
+        <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
         <button data-id="remove" class="remove">Удалить</button> 
     `;
@@ -125,7 +124,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
         }
         liEl.innerHTML = `
         <input type="checkbox" data-id="done" checked>
-        <a href="${item.link}" target="_blank">${item.name}</a>
+        <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
         <button data-id="remove" class="remove">Удалить</button> 
     `;

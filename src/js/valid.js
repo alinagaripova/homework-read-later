@@ -20,6 +20,3 @@ export function removeTag(task) {   //удаляет нулевой элемен
         task.tag.splice(index, 1);
     }
 }
-
-
-//todo: сделать валидацию
