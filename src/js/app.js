@@ -98,7 +98,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
         <input type="checkbox" data-id="done">
         <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
-        <button data-id="remove" class="remove">Удалить</button> 
+        <button data-id="remove" class="remove btn btn-danger btn-sm">Удалить</button> 
     `;
         firstListEl.appendChild(liEl);
 
@@ -118,6 +118,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
     }
     for (const item of taskListDone.items) {  //элементы taskListDone
         const liEl = document.createElement('li');
+
         let tagsHTML = '';
         for (const tag of item.tag) {          //перед каждым тегом ставит #
             tagsHTML = tagsHTML + `#${tag}`
@@ -126,7 +127,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
         <input type="checkbox" data-id="done" checked>
         <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
         <span class="tags">${tagsHTML}</span>
-        <button data-id="remove" class="remove">Удалить</button> 
+        <button data-id="remove" class="remove btn btn-danger btn-sm">Удалить</button> 
     `;
         secondListEl.appendChild(liEl);
 
