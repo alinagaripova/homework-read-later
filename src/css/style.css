@@ -36,6 +36,13 @@
  }
 li {
     list-style: none;
+    margin-bottom: 35px;
+}
+#list-2 li:first-child {
+    margin-top: 20px;
+}
+#search-list li:first-child {
+    margin-top: 20px;
 }
 .remove {
     position: fixed;

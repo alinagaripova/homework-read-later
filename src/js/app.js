@@ -54,8 +54,8 @@ function rebuildSearchList(searchListEl, results) {                //перес�
         }
 
         liEl.innerHTML = `                                                 
-        <a href="${result.link}" target="_blank">${result.name}</a>
-        <span class="tags">${tagsHTML}</span>
+        <a href="${result.link}" target="_blank" class="p-3 mb-2 bg-light text-dark">${result.name}</a>
+        <span class="tags p-3 mb-2 bg-success text-white" >${tagsHTML}</span>
     `;
         searchListEl.appendChild(liEl);
     }
@@ -88,6 +88,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
     secondListEl.innerHTML = ''; // вырезать всех child'ов
     for (const item of taskList.items) { //элементы taskList
         const liEl = document.createElement('li');
+        liEl.className = 'task';
 
         let tagsHTML = '';
         for (const tag of item.tag) {                                        //перед каждым тегом ставит #
@@ -96,8 +97,8 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
 
         liEl.innerHTML = `                                                 
         <input type="checkbox" data-id="done">
-        <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
-        <span class="tags">${tagsHTML}</span>
+        <a href="${item.link}" target="_blank" class="link-name p-3 mb-2 bg-light text-dark">${item.name}</a>
+        <span class="tags p-3 mb-2 bg-success text-white">${tagsHTML}</span>
         <button data-id="remove" class="remove btn btn-danger btn-sm">Удалить</button> 
     `;
         firstListEl.appendChild(liEl);
@@ -118,6 +119,7 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
     }
     for (const item of taskListDone.items) {  //элементы taskListDone
         const liEl = document.createElement('li');
+        liEl.className = 'task';
 
         let tagsHTML = '';
         for (const tag of item.tag) {          //перед каждым тегом ставит #
@@ -125,8 +127,8 @@ function rebuildTaskList(firstListEl, secondListEl, taskList, taskListDone) {   
         }
         liEl.innerHTML = `
         <input type="checkbox" data-id="done" checked>
-        <a href="${item.link}" target="_blank" class="link-name">${item.name}</a>
-        <span class="tags">${tagsHTML}</span>
+        <a href="${item.link}" target="_blank" class="link-name p-3 mb-2 bg-light text-dark">${item.name}</a>
+        <span class="tags p-3 mb-2 bg-success text-white">${tagsHTML}</span>
         <button data-id="remove" class="remove btn btn-danger btn-sm">Удалить</button> 
     `;
         secondListEl.appendChild(liEl);
